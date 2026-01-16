@@ -1,9 +1,11 @@
-from sqlalchemy import Column, Integer, String, DateTime, LargeBinary, create_engine
+# Integration/backend/models.py
+from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
 
-# Database file location
-DATABASE_URL = "sqlite:///./safety_system.db"
+# NOTE: We use an absolute path so both scripts find the SAME file
+# Update this to your exact path if needed, or keep as is for relative pathing
+DATABASE_URL = "sqlite:///../safety_system.db" 
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -13,15 +15,9 @@ class ViolationEvent(Base):
     __tablename__ = "events"
     id = Column(Integer, primary_key=True, index=True)
     timestamp = Column(DateTime, default=datetime.now)
-    person_name = Column(String, default="Unknown")
-    violation_type = Column(String) # e.g. "No Helmet"
-    snapshot_path = Column(String)  # Path to image evidence
+    person_name = Column(String)
+    violation_type = Column(String)
+    snapshot_path = Column(String)
 
-class Employee(Base):
-    __tablename__ = "employees"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True)
-    face_encoding = Column(LargeBinary)
-
-# Create tables if they don't exist
+# Create tables
 Base.metadata.create_all(bind=engine)
