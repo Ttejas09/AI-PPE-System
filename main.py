@@ -7,13 +7,12 @@ import supervision as sv
 from logic import check_compliance
 
 # --- CONFIGURATION ---
-# UPDATE THIS with your actual path!
 MODEL_PATH = 'D:\\ML_Work\\DataPrep\\runs\\detect\\ppe_model_v13\\weights\\best.pt' 
 POSE_MODEL_PATH = 'yolov8n-pose.pt'
 
 def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print(f"🚀 Starting AI Safety Monitor on: {device.upper()}")
+    print(f"Starting AI Safety Monitor on: {device.upper()}")
 
     try:
         model = YOLO(MODEL_PATH)
@@ -22,15 +21,13 @@ def main():
         print(f"❌ Error loading models: {e}")
         return
 
-    cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    cap = cv2.VideoCapture('D:\ML_Work\Test2.mp4')  
 
     fps_start = time.time()
     fps_cnt = 0
     fps_disp = 0
 
-    print("✅ System Ready. Press 'q' to quit.")
+    print(" System Ready. Press 'q' to quit.")
 
     while True:
         ret, frame = cap.read()
